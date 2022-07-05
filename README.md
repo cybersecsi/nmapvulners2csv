@@ -48,6 +48,7 @@ pip install nmapvulners2csv
 Install dependencies by using the following command:   
 ``` 
 pip install -r requirements.txt
+chmod +x nmapvulners2csv/nmapvulners2csv.py
 ```
 
 ```   
@@ -58,12 +59,12 @@ Usage: nmapvulners2csv.py NMAP_XML_FILE <flags>
 
 To run the converter:   
 ```  
-python nmapvulners2csv <nmap_output.xml>   
+nmapvulners2csv.py <nmap_output.xml>   
 ``` 
 
 the script will generate a file output.csv in output dir. If you want to set the output file:   
 ```   
-python nmapvulners2csv <nmap_output.xml>  --output <output_csv_file> --dir <output_directory>
+nmapvulners2csv.py <nmap_output.xml>  --output <output_csv_file> --dir <output_directory>
 ``` 
 For multiple data:   
 ```  
