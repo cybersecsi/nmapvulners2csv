@@ -27,11 +27,11 @@ setup(
     version=get_version(),
     description = "Convert Nmap Vulners script output to CSV",
     author='SecSI',
-    author_email='info@secsi.io',
+    author_email='dev@secsi.io',
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Pentesters - Bug Bounty Hunters',
-        'Programming Language :: Python :: 3.8',
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Information Technology',
+        'Programming Language :: Python :: 3 :: Only',
         'Topic :: Security'
     ],
     packages=find_packages(),
@@ -42,7 +42,7 @@ setup(
             'nmapvulners2csv = nmapvulners2csv:main'
         ],
     },
-    url='https:/github.com/cybersecsi/nmapvulners2csv',
+    url='',
     long_description=read('README.md', fix_header=True),
     long_description_content_type='text/markdown',
     install_requires=Path('requirements.txt').read_text().splitlines(),
