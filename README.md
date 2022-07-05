@@ -1,5 +1,20 @@
-# nmapvulners2csv
-Convert Nmap vulners script output to CSV
+<h1 align="center">
+  <br>
+  <picture>
+    <source
+      srcset="https://raw.githubusercontent.com/cybersecsi/nmapvulners2csv/main/assets/logo-dark-mode.png"
+      media="(prefers-color-scheme: dark)">
+    <img src="https://raw.githubusercontent.com/cybersecsi/nmapvulners2csv/main/assets/logo-light-mode.png" alt= "nmapvulners2csv" width="300px">
+  </picture>
+</h1>
+<p align="center">
+    <b>nmapvulners2csv</b>
+<p>
+
+<p align="center">
+  <a href="https://github.com/cybersecsi/nmapvulners2csv/blob/main/README.md"><img src="https://img.shields.io/badge/Documentation-complete-green.svg?style=flat"></a>
+  <a href="https://github.com/cybersecsi/nmapvulners2csv/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache2-blue.svg"></a>
+</p>
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -10,13 +25,17 @@ Convert Nmap vulners script output to CSV
 - [Contributing](#contributing)
 - [License](#license)
 
-## Getting Started  
+##  Getting Started  
 Run nmap with enabled script Vulners and save xml output, for example:   
 ```  
 nmap -sV --script vulners -oX <nmap_output.xml>  
 ```  
 
-### Install
+### Example
+The output of the tool is like the following:
+![Execution example](assets/usage.png)
+
+### Install & Run
 To install it you just need to run:
 ```
 pip install nmapvulners2csv

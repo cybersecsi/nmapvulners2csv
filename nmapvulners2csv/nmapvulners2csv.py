@@ -170,7 +170,7 @@ def process(nmap_xml_file, output_dir = OUTPUT_DIR, output = 'output.csv', descr
     check_or_create_dir(output_dir)
 
     with open(path.join(output_dir, output),  'w', encoding='utf-8', newline='') as csvfile:
-        info("Store evidences")
+        info(f"Store evidences in {path.join(output_dir, output)}")
         writer = csv.DictWriter(csvfile, fieldnames=CSV_HEADERS)
         writer.writeheader()
         writer.writerows(all_evidences)

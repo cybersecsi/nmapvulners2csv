@@ -18,9 +18,9 @@ def get_version():
 setup(
     name='nmapvulners2csv',
     version='0.0.1',
-    description = "Convert Nmap vulners script output to CSV",
+    description = "Convert Nmap Vulners script output to CSV",
     author='SecSI',
-    author_email='gaetano.perrone@secsi.io',
+    author_email='info@secsi.io',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Pentesters - Bug Bounty Hunters',
