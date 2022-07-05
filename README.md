@@ -23,6 +23,7 @@
     - [Prerequisites](#prerequisites)
   - [Evidences Description](#evidences-description)
 - [Contributing](#contributing)
+- [Credits](#credits)
 - [License](#license)
 
 ##  Getting Started  
@@ -81,6 +82,11 @@ Contributions are what make the open source community such an amazing place to b
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## Credits
+``nmapvulners2csv`` is proudly developed [@SecSI](https://secsi.io) by:
+- [Gaetano Perrone](https://github.com/giper45)
+- [Angelo Delicato](https://github.com/thelicato)
 
 ## License
 Distributed under Apache 2 License. See `LICENSE` for more information. 
