@@ -3,7 +3,7 @@
   <picture>
     <source
       srcset="https://raw.githubusercontent.com/cybersecsi/nmapvulners2csv/main/assets/logo-dark-mode.png"
-      media="(prefers-color-scheme: dark)">
+      media="(prefers-color-scheme: dark)"/>
     <img src="https://raw.githubusercontent.com/cybersecsi/nmapvulners2csv/main/assets/logo-light-mode.png" alt= "nmapvulners2csv" width="300px">
   </picture>
 </h1>
@@ -34,7 +34,7 @@ nmap -sV --script vulners -oX <nmap_output.xml>
 
 ### Example
 The output of the tool is like the following:
-![Execution example](assets/usage.png)
+![Execution example](https://github.com/cybersecsi/nmapvulners2csv/raw/main/assets/usage.png)
 
 ### Install & Run
 To install it you just need to run:

@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 """Setup for nmapvulners2csv."""
 
@@ -6,7 +7,10 @@ from pathlib import Path
 
 def read(rel_path):
     init = Path(__file__).resolve().parent / rel_path
-    return init.read_text('utf-8', 'ignore')
+    initial_content = init.read_text('utf-8', 'ignore')
+    fixed_header = '<h1 align="center"><img src="https://raw.githubusercontent.com/cybersecsi/nmapvulners2csv/main/assets/logo-light-mode.png" alt= "nmapvulners2csv" width="300px"></h1>'
+    content = fixed_header +  initial_content.split('</h1>')[1]
+    return content
 
 def get_version():
     ver_path = 'nmapvulners2csv/nmapvulners2csv.py'
@@ -17,7 +21,7 @@ def get_version():
 
 setup(
     name='nmapvulners2csv',
-    version='0.0.1',
+    version=get_version(),
     description = "Convert Nmap Vulners script output to CSV",
     author='SecSI',
     author_email='info@secsi.io',
