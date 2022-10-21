@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "nmapvulners2csv"
+version = "1.0.4"
+authors = ["SecSI <dev@secsi.io>"]
+description = "Convert Nmap Vulners script output to CSV"
+license = "LICENSE"
+readme = "assets/PYPI_README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+beautifulsoup4 = "^4.11.1"
+bs4 = "^0.0.1"
+elementpath = "^3.0.2"
+fire = "^0.4.0"
+six = "^1.16.0"
+soupsieve = "^2.3.2.post1"
+termcolor = "^2.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+nmapvulners2csv = 'nmapvulners2csv:main'
