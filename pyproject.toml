@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nmapvulners2csv"
-version = "1.0.4"
+version = "1.0.5"
 authors = ["SecSI <dev@secsi.io>"]
 description = "Convert Nmap Vulners script output to CSV"
 license = "LICENSE"
@@ -15,6 +15,7 @@ fire = "^0.4.0"
 six = "^1.16.0"
 soupsieve = "^2.3.2.post1"
 termcolor = "^2.0.1"
+requests = "^2.31.0"
 
 [build-system]
 requires = ["poetry-core"]
