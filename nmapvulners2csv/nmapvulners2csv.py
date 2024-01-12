@@ -17,12 +17,6 @@ CSV_HEADERS = ['host', 'port', 'protocol', 'service', 'version',
 VULNERS_URL = "https://vulners.com/"
 
 
-def vulners_base(t): return "{}{}".format(VULNERS_URL, t)
-
-
-def vulners_endpoint(t, id): return "{}/{}".format(vulners_base(t), id)
-
-
 def banner():
     print(
         '''
@@ -44,6 +38,12 @@ def info(msg):
 def err(msg):
     traceback.print_exc()
     print("[-] ERR:{}".format(msg))
+
+
+def vulners_base(t): return "{}{}".format(VULNERS_URL, t)
+
+
+def vulners_endpoint(t, id): return "{}/{}".format(vulners_base(t), id)
 
 
 def download_descr(type, id):
@@ -200,7 +200,9 @@ def process(nmap_xml_file, output_dir=OUTPUT_DIR, output='output.csv', descr=Fal
 def main():
     try:
         banner()
-        fire.Fire(process)
+        fire.core.Display = lambda lines, out: out.write(
+            "\n".join(lines) + "\n")
+        fire.Fire(process, command=None)
     except Exception as e:
         err(str(e))
 
