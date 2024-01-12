@@ -17,10 +17,11 @@
 </p>
 
 ## Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Getting Started](#getting-started)
-  - [Install](#install)
-  - [Run without installing](#run-without-installing)
-    - [Prerequisites](#prerequisites)
+  - [Example](#example)
+  - [Install \& Run](#install--run)
+  - [Usage](#usage)
   - [Evidences Description](#evidences-description)
 - [Contributing](#contributing)
 - [Credits](#credits)
@@ -39,36 +40,30 @@ The output of the tool is like the following:
 ### Install & Run
 To install it you just need to run:
 ```
-pip install nmapvulners2csv
+pipx install nmapvulners2csv
+nmapvulners2csv --help
 ```
 
-### Run without installing
-
-#### Prerequisites   
-Install dependencies by using the following command:   
-``` 
-pip install -r requirements.txt
-chmod +x nmapvulners2csv/nmapvulners2csv.py
-```
+### Usage
 
 ```   
-Usage: nmapvulners2csv.py NMAP_XML_FILE <flags>
+Usage: nmapvulners2csv NMAP_XML_FILE <flags>
   optional flags:        --output | --descr
   
 ```  
 
 To run the converter:   
 ```  
-nmapvulners2csv.py <nmap_output.xml>   
+nmapvulners2csv <nmap_output.xml>   
 ``` 
 
 the script will generate a file output.csv in output dir. If you want to set the output file:   
 ```   
-nmapvulners2csv.py <nmap_output.xml>  --output <output_csv_file> --dir <output_directory>
+nmapvulners2csv <nmap_output.xml>  --output <output_csv_file> --dir <output_directory>
 ``` 
 For multiple data:   
 ```  
-for i in `ls -1 vulners*`; do python nmapvulners2csv.py $i ${i%%.xml}.csv ; done   
+for i in `ls -1 vulners*`; do nmapvulners2csv $i ${i%%.xml}.csv ; done   
 ``` 
 
 ### Evidences Description  
