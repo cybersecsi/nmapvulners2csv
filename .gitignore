@@ -141,3 +141,7 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Custom
+nmapvulners2csv_output
+.DS_Store
