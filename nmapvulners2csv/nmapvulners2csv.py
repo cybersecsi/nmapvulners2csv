@@ -10,16 +10,22 @@ from bs4 import BeautifulSoup
 from os import path, makedirs
 
 VERSION = '1.0.5'
-OUTPUT_DIR = "nmapvulners2csv_output" # Default value, can be changed with the '--dir' optional flag
-CSV_HEADERS = ['host', 'port', 'protocol', 'service', 'version','cpe', 'id_vuln', 'cvss', 'type', 'exploit', 'url', 'description']
-VULNERS_URL= "https://vulners.com/"
+# Default value, can be changed with the '--dir' optional flag
+OUTPUT_DIR = "nmapvulners2csv_output"
+CSV_HEADERS = ['host', 'port', 'protocol', 'service', 'version',
+               'cpe', 'id_vuln', 'cvss', 'type', 'exploit', 'url', 'description']
+VULNERS_URL = "https://vulners.com/"
 
-vulners_base = lambda t: "{}{}".format(VULNERS_URL, t)
-vulners_endpoint = lambda t,id: "{}/{}".format(vulners_base(t), id)
+
+def vulners_base(t): return "{}{}".format(VULNERS_URL, t)
+
+
+def vulners_endpoint(t, id): return "{}/{}".format(vulners_base(t), id)
+
 
 def banner():
-  print(
-      '''
+    print(
+        '''
         ███████╗███████╗ ██████╗███████╗██╗
         ██╔════╝██╔════╝██╔════╝██╔════╝██║
         ███████╗█████╗  ██║     ███████╗██║
@@ -28,19 +34,23 @@ def banner():
         ╚══════╝╚══════╝ ╚═════╝╚══════╝╚═╝
 
         https://wwww.secsi.io - https://github.com/cybersecsi/nmapvulners2csv
-      ''')  
+      ''')
+
 
 def info(msg):
     print("[+] {}".format(msg))
+
 
 def err(msg):
     traceback.print_exc()
     print("[-] ERR:{}".format(msg))
 
+
 def download_descr(type, id):
     ve = vulners_endpoint(type, id)
     ret = requests.get(ve)
     return ret.text
+
 
 def obtain_descr(text):
     html = "".join(text)
@@ -48,38 +58,45 @@ def obtain_descr(text):
     meta_descr = soup.select('meta[property="og:description"]')[0]
     return meta_descr['content']
 
+
 def is_open(p):
     state = p.find("state")
     return state.attrib['state'] == "open"
 
+
 def get_cpe(p):
     return p.find("service").find("cpe").text if p.find("service") is not None and p.find("service").find("cpe") is not None else ""
 
+
 def get_vulns(p):
     script = p.find("script[@id='vulners']")
-    if script is None:
+    output = "" if script is None else script.attrib['output']
+    vulners_output_error = "ERROR: Script execution failed (use -d to debug)"
+    if script is None or output == vulners_output_error:
         return []
     else:
         t = script.find("table")
         vulns = []
         tables = t.findall('table')
         for t in tables:
-            vuln = { 'id': t.find("elem[@key='id']").text,
-                'cvss': t.find("elem[@key='cvss']").text,
-                'exploit': t.find("elem[@key='is_exploit']").text,
-                'type': t.find("elem[@key='type']").text,
-            }
+            vuln = {'id': t.find("elem[@key='id']").text,
+                    'cvss': t.find("elem[@key='cvss']").text,
+                    'exploit': t.find("elem[@key='is_exploit']").text,
+                    'type': t.find("elem[@key='type']").text,
+                    }
             vuln['url'] = vulners_endpoint(vuln['type'], vuln['id'])
             vulns.append(vuln)
         return vulns
+
 
 def check_or_create_dir(dir_path):
     exists = path.exists(dir_path)
 
     if not exists:
-        # Create a new directory because it does not exist 
+        # Create a new directory because it does not exist
         makedirs(dir_path)
         info(f"Directory {dir_path} created")
+
 
 def get(host, descr=False):
     ports = host.findall('ports//port')
@@ -106,7 +123,7 @@ def get(host, descr=False):
         except Exception as e:
             version = ""
 
-        #CSV_HEADERS = ['host', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
+        # CSV_HEADERS = ['host', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
         if not vulns:
             evidence = {
                 'host': host.find("address").attrib['addr'],
@@ -116,9 +133,9 @@ def get(host, descr=False):
                 'version': product + version,
                 'cpe': "",
                 'id_vuln':  "",
-                'cvss' : "",
-                'type' : "",
-                'exploit' : "",
+                'cvss': "",
+                'type': "",
+                'exploit': "",
                 'url':  "",
                 'description': ""
             }
@@ -129,7 +146,7 @@ def get(host, descr=False):
             if descr:
                 sleep(0.2)
 
-            #CSV_HEADERS = ['host', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
+            # CSV_HEADERS = ['host', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
             info("get {}".format(v['id']))
             evidence = {
                 'host': host.find("address").attrib['addr'],
@@ -139,16 +156,17 @@ def get(host, descr=False):
                 'version': product + " " + version,
                 'cpe': cpe,
                 'id_vuln':  v['id'],
-                'cvss' : v['cvss'],
-                'type' : v['type'],
-                'exploit' : v['exploit'],
+                'cvss': v['cvss'],
+                'type': v['type'],
+                'exploit': v['exploit'],
                 'url':  v['url'],
                 'description': obtain_descr(download_descr(v['type'], v['id'])) if descr else ""
             }
             evidences.append(evidence)
     return evidences, open_ports
 
-def process(nmap_xml_file, output_dir = OUTPUT_DIR, output = 'output.csv', descr = False):
+
+def process(nmap_xml_file, output_dir=OUTPUT_DIR, output='output.csv', descr=False):
     """
     Convert a xml nmap output file in csv file
     Example usage:
@@ -156,7 +174,7 @@ def process(nmap_xml_file, output_dir = OUTPUT_DIR, output = 'output.csv', descr
     """
     if descr:
         info("Description enabled: send requests to obtain vunerability descriptoins")
-    
+
     info(f"Opening XML file {nmap_xml_file}")
     document = ElementTree.parse(nmap_xml_file)
     info("Obtaining hosts...")
@@ -178,12 +196,14 @@ def process(nmap_xml_file, output_dir = OUTPUT_DIR, output = 'output.csv', descr
         writer.writerows(all_evidences)
     pass
 
+
 def main():
     try:
         banner()
         fire.Fire(process)
     except Exception as e:
         err(str(e))
+
 
 if __name__ == '__main__':
     main()
