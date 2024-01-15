@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nmapvulners2csv"
-version = "1.0.6"
+version = "1.0.7"
 authors = ["SecSI <dev@secsi.io>"]
 description = "Convert Nmap Vulners script output to CSV"
 license = "LICENSE"
