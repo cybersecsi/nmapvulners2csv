@@ -12,7 +12,7 @@ from os import path, makedirs
 VERSION = '1.0.8'
 # Default value, can be changed with the '--dir' optional flag
 OUTPUT_DIR = "nmapvulners2csv_output"
-CSV_HEADERS = ['host', 'port', 'protocol', 'service', 'version',
+CSV_HEADERS = ['ip', 'port', 'protocol', 'service', 'version',
                'cpe', 'id_vuln', 'cvss', 'type', 'exploit', 'url', 'description']
 VULNERS_URL = "https://vulners.com/"
 
@@ -123,10 +123,10 @@ def get(host, descr=False):
         except Exception as e:
             version = ""
 
-        # CSV_HEADERS = ['host', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
+        # CSV_HEADERS = ['ip', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
         if not vulns:
             evidence = {
-                'host': host.find("address").attrib['addr'],
+                'ip': host.find("address").attrib['addr'],
                 'port': p.attrib['portid'],
                 'protocol': p.attrib['protocol'],
                 'service': service,
@@ -146,10 +146,10 @@ def get(host, descr=False):
             if descr:
                 sleep(0.2)
 
-            # CSV_HEADERS = ['host', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
+            # CSV_HEADERS = ['ip', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
             info("get {}".format(v['id']))
             evidence = {
-                'host': host.find("address").attrib['addr'],
+                'ip': host.find("address").attrib['addr'],
                 'port': p.attrib['portid'],
                 'protocol': p.attrib['protocol'],
                 'service': service,
