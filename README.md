@@ -81,9 +81,10 @@ Contributions are what make the open source community such an amazing place to b
 
 ## Credits
 ``nmapvulners2csv`` is proudly developed [@SecSI](https://secsi.io) by:
-- [Gaetano Perrone](https://github.com/giper45)
+- [giper45](https://github.com/giper45)
 - [NdA994](https://github.com/NdA994)
-- [Angelo Delicato](https://github.com/thelicato)
+- [thelicato](https://github.com/thelicato)
+- [dcapone](https://github.com/daniele-capone)
 
 ## License
 Distributed under Apache 2 License. See `LICENSE` for more information. 
