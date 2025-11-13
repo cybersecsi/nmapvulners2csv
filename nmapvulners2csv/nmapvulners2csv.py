@@ -19,7 +19,7 @@ VULNERS_URL = "https://vulners.com/"
 
 def banner():
     print(
-        '''
+        f'''
         ███████╗███████╗ ██████╗███████╗██╗
         ██╔════╝██╔════╝██╔════╝██╔════╝██║
         ███████╗█████╗  ██║     ███████╗██║
@@ -27,30 +27,25 @@ def banner():
         ███████║███████╗╚██████╗███████║██║
         ╚══════╝╚══════╝ ╚═════╝╚══════╝╚═╝
 
-        https://wwww.secsi.io - https://github.com/cybersecsi/nmapvulners2csv
+        https://wwww.secsi.io - https://github.com/cybersecsi/nmapvulners2csv - v{VERSION}
       ''')
 
 
 def info(msg):
     print("[+] {}".format(msg))
 
-
 def err(msg):
     traceback.print_exc()
     print("[-] ERR:{}".format(msg))
 
-
 def vulners_base(t): return "{}{}".format(VULNERS_URL, t)
 
-
 def vulners_endpoint(t, id): return "{}/{}".format(vulners_base(t), id)
-
 
 def download_descr(type, id):
     ve = vulners_endpoint(type, id)
     ret = requests.get(ve)
     return ret.text
-
 
 def obtain_descr(text):
     html = "".join(text)
@@ -58,15 +53,12 @@ def obtain_descr(text):
     meta_descr = soup.select('meta[property="og:description"]')[0]
     return meta_descr['content']
 
-
 def is_open(p):
     state = p.find("state")
     return state.attrib['state'] == "open"
 
-
 def get_cpe(p):
     return p.find("service").find("cpe").text if p.find("service") is not None and p.find("service").find("cpe") is not None else ""
-
 
 def get_vulns(p):
     script = p.find("script[@id='vulners']")
@@ -88,7 +80,6 @@ def get_vulns(p):
             vulns.append(vuln)
         return vulns
 
-
 def check_or_create_dir(dir_path):
     exists = path.exists(dir_path)
 
@@ -96,7 +87,6 @@ def check_or_create_dir(dir_path):
         # Create a new directory because it does not exist
         makedirs(dir_path)
         info(f"Directory {dir_path} created")
-
 
 def get(host, descr=False):
     ports = host.findall('ports//port')
@@ -108,20 +98,18 @@ def get(host, descr=False):
         vulns = get_vulns(p)
         cpe = get_cpe(p)
 
-        try:
-            service = p.find("service").attrib['name']
-        except Exception as e:
-            service = ""
+        service_elem = p.find("service")
+        attribs = service_elem.attrib if service_elem is not None else {}
 
-        try:
-            product = p.find("service").attrib['product']
-        except Exception as e:
-            product = ""
+        product   = attribs.get('product', '')
+        version   = attribs.get('version', '')
+        extrainfo = attribs.get('extrainfo', '')
 
-        try:
-            version = p.find("service").attrib['version']
-        except Exception as e:
-            version = ""
+        parts = [product, version]
+        version_str = " ".join(filter(None, parts))
+
+        if extrainfo:
+            version_str += f" ({extrainfo})"
 
         # CSV_HEADERS = ['ip', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
         if not vulns:
@@ -129,8 +117,8 @@ def get(host, descr=False):
                 'ip': host.find("address").attrib['addr'],
                 'port': p.attrib['portid'],
                 'protocol': p.attrib['protocol'],
-                'service': service,
-                'version': product + version,
+                'service': attribs.get('name', ''),
+                'version': version_str,
                 'cpe': "",
                 'id_vuln':  "",
                 'cvss': "",
@@ -152,8 +140,8 @@ def get(host, descr=False):
                 'ip': host.find("address").attrib['addr'],
                 'port': p.attrib['portid'],
                 'protocol': p.attrib['protocol'],
-                'service': service,
-                'version': product + " " + version,
+                'service': attribs.get('name', ''),
+                'version': version_str,
                 'cpe': cpe,
                 'id_vuln':  v['id'],
                 'cvss': v['cvss'],
@@ -164,7 +152,6 @@ def get(host, descr=False):
             }
             evidences.append(evidence)
     return evidences, open_ports
-
 
 def process(nmap_xml_file, output_dir=OUTPUT_DIR, output='output.csv', descr=False):
     """
@@ -196,7 +183,6 @@ def process(nmap_xml_file, output_dir=OUTPUT_DIR, output='output.csv', descr=Fal
         writer.writerows(all_evidences)
     pass
 
-
 def main():
     try:
         banner()
@@ -205,7 +191,6 @@ def main():
         fire.Fire(process, command=None)
     except Exception as e:
         err(str(e))
-
 
 if __name__ == '__main__':
     main()
