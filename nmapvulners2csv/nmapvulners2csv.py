@@ -9,7 +9,7 @@ from time import sleep
 from bs4 import BeautifulSoup
 from os import path, makedirs
 
-VERSION = '1.1.0'
+VERSION = '1.2.0'
 # Default value, can be changed with the '--dir' optional flag
 OUTPUT_DIR = "nmapvulners2csv_output"
 CSV_HEADERS = ['ip', 'rdns', 'port', 'protocol', 'service', 'version','cpe', 'id_vuln', 'cvss', 'type', 'exploit', 'url', 'description']
