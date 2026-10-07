@@ -85,6 +85,7 @@ Contributions are what make the open source community such an amazing place to b
 - [NdA994](https://github.com/NdA994)
 - [thelicato](https://github.com/thelicato)
 - [dcapone](https://github.com/daniele-capone)
+- [emalderson](https://github.com/emalderson)
 
 ## License
 Distributed under Apache 2 License. See `LICENSE` for more information. 
