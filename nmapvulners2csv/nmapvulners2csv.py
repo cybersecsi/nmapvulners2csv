@@ -12,8 +12,7 @@ from os import path, makedirs
 VERSION = '1.1.0'
 # Default value, can be changed with the '--dir' optional flag
 OUTPUT_DIR = "nmapvulners2csv_output"
-CSV_HEADERS = ['ip', 'port', 'protocol', 'service', 'version',
-               'cpe', 'id_vuln', 'cvss', 'type', 'exploit', 'url', 'description']
+CSV_HEADERS = ['ip', 'rdns', 'port', 'protocol', 'service', 'version','cpe', 'id_vuln', 'cvss', 'type', 'exploit', 'url', 'description']
 VULNERS_URL = "https://vulners.com/"
 
 
@@ -101,6 +100,16 @@ def get(host, descr=False):
         service_elem = p.find("service")
         attribs = service_elem.attrib if service_elem is not None else {}
 
+        # Reverse DNS (PTR record) of the host, if nmap resolved one
+        ptr = host.find("hostnames/hostname[@type='PTR']")
+        rdns = ptr.attrib['name'] if ptr is not None else ""
+
+        # Flag as http when the service name doesn't say so but the fingerprint does
+        service_name = attribs.get('name', '')
+        servicefp = attribs.get('servicefp', '').replace('\nSF:', '')
+        if 'http' not in service_name and 'HTTP/' in servicefp:
+            service_name = f"{service_name}/http" if service_name else "http"
+
         product   = attribs.get('product', '')
         version   = attribs.get('version', '')
         extrainfo = attribs.get('extrainfo', '')
@@ -111,13 +120,14 @@ def get(host, descr=False):
         if extrainfo:
             version_str += f" ({extrainfo})"
 
-        # CSV_HEADERS = ['ip', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
+        # CSV_HEADERS = ['ip', 'rdns', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
         if not vulns:
             evidence = {
                 'ip': host.find("address").attrib['addr'],
+                'rdns': rdns,
                 'port': p.attrib['portid'],
                 'protocol': p.attrib['protocol'],
-                'service': attribs.get('name', ''),
+                'service': service_name,
                 'version': version_str,
                 'cpe': "",
                 'id_vuln':  "",
@@ -134,13 +144,14 @@ def get(host, descr=False):
             if descr:
                 sleep(0.2)
 
-            # CSV_HEADERS = ['ip', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
+            # CSV_HEADERS = ['ip', 'rdns', 'port', 'service','cpe', 'cvss', 'id_vuln', 'type', 'exploit']
             info("get {}".format(v['id']))
             evidence = {
                 'ip': host.find("address").attrib['addr'],
+                'rdns': rdns,
                 'port': p.attrib['portid'],
                 'protocol': p.attrib['protocol'],
-                'service': attribs.get('name', ''),
+                'service': service_name,
                 'version': version_str,
                 'cpe': cpe,
                 'id_vuln':  v['id'],
